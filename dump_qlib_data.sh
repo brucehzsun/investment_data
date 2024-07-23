@@ -12,7 +12,7 @@ else
     conda activate qlib_data
     echo "$DIR not exists, update..."
 
-    cd /data/dolt/investment_data
+    cd /mnt/data/dolt/investment_data
     dolt pull origin
 
     dolt sql-server --config dolt_config.yml &

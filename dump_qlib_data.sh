@@ -12,7 +12,7 @@ else
     conda activate qlib_data
     echo "$DIR not exists, update..."
 
-    ./daily_update.sh
+    # ${WORKING_DIR}/daily_update.sh
 
     cd /mnt/data/dolt/investment_data
     dolt pull origin

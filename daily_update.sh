@@ -3,6 +3,7 @@ set -x
 
 [ ! -d "/mnt/data/dolt/investment_data" ] && echo "initializing dolt repo" && cd /mnt/data/dolt && dolt clone chenditc/investment_data
 cd /mnt/data/dolt/investment_data
+# dolt login arjv9i2qhotjjmvafo61kf7mshal7bseli9roqrbfj0u90rkh4pg
 dolt pull
 
 echo "Updating index weight"
@@ -10,7 +11,7 @@ startdate=$(dolt sql -q "select * from max_index_date" -r csv | tail -1)
 python3 ~/vs_python/investment_data/tushare/dump_index_weight.py --start_date=$startdate
 for file in $(ls ~/vs_python/investment_data/tushare/index_weight/); 
 do  
-  dolt table import -u ts_index_weight ~/vs_python/investment_data/tushare/index_weight/$file; 
+  dolt table import -u ts_index_weight --continue ~/vs_python/investment_data/tushare/index_weight/$file; 
 done
 
 # echo "Updating index price"

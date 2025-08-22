@@ -11,7 +11,7 @@ fi
 mkdir -p $WORKING_DIR/dolt
 
 [ ! -d "$WORKING_DIR/dolt/investment_data" ] && cd $WORKING_DIR/dolt && dolt clone chenditc/investment_data
-[ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO
+[ ! -d "$WORKING_DIR/qlib" ] && git clone $QLIB_REPO "$WORKING_DIR/qlib"
 
 cd $WORKING_DIR/dolt/investment_data
 dolt pull origin
@@ -26,7 +26,7 @@ python3 ./qlib/dump_all_to_qlib_source.py
 
 export PYTHONPATH=$PYTHONPATH:$WORKING_DIR/qlib/scripts
 python3 ./qlib/normalize.py normalize_data --source_dir ./qlib/qlib_source/ --normalize_dir ./qlib/qlib_normalize --max_workers=16 --date_field_name="tradedate" 
-python3 $WORKING_DIR/qlib/scripts/dump_bin.py dump_all --csv_path ./qlib/qlib_normalize/ --qlib_dir $WORKING_DIR/qlib_bin --date_field_name=tradedate --exclude_fields=tradedate,symbol
+python3 $WORKING_DIR/qlib/scripts/dump_bin.py dump_all --data_path ./qlib/qlib_normalize/ --qlib_dir $WORKING_DIR/qlib_bin --date_field_name=tradedate --exclude_fields=tradedate,symbol
 
 mkdir -p ./qlib/qlib_index/
 python3 ./qlib/dump_index_weight.py 
@@ -37,8 +37,10 @@ cp qlib/qlib_index/csi* $WORKING_DIR/qlib_bin/instruments/
 
 tar -czvf ./qlib_bin.tar.gz $WORKING_DIR/qlib_bin/
 ls -lh ./qlib_bin.tar.gz
-if [ -d "/output" ]; then
-    mv ./qlib_bin.tar.gz /output/
+OUTPUT_DIR=${OUTPUT_DIR:-/output}
+if [ -d "${OUTPUT_DIR}" ]; then
+    mv ./qlib_bin.tar.gz "${OUTPUT_DIR}/"
+    ls -lh "${OUTPUT_DIR}/qlib_bin.tar.gz"
 else
-    echo "Directory /output does not exist."
+    echo "Generated tarball at $(pwd)/qlib_bin.tar.gz"
 fi

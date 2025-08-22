@@ -5,6 +5,7 @@ set -x
 cd /mnt/data/dolt/investment_data
 # dolt login arjv9i2qhotjjmvafo61kf7mshal7bseli9roqrbfj0u90rkh4pg
 dolt pull
+dolt push
 
 echo "Updating index weight"
 startdate=$(dolt sql -q "select * from max_index_date" -r csv | tail -1)

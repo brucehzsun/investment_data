@@ -1,3 +1,11 @@
+#!/usr/bin/zsh
+
+source ~/.zshrc
+
+cd ~/vs_python/investment_data
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate qlib_data
+
 set -e
 set -x
 

@@ -21,6 +21,12 @@ else
 
     sleep 5s
 
+    export DB_HOST=127.0.0.1
+    export DB_PORT=3307
+    export DB_USER=root
+    export DB_PASSWORD=
+    export DB_NAME=investment_data
+
     cd $WORKING_DIR
     mkdir -p ./qlib/qlib_source
     python3 ./qlib/dump_all_to_qlib_source.py
@@ -39,7 +45,10 @@ else
 
     cp qlib/qlib_index/csi* $WORKING_DIR/qlib_bin/instruments/
 
+    tar -czvf qlib_bin.tar.gz -C $WORKING_DIR qlib_bin
+
     mv qlib_bin/* ~/.qlib/qlib_data/cn_data
+    mv qlib_bin.tar.gz /mnt/data/download/
 
     rm -rf qlib/qlib_*
     rm -rf qlib_bin

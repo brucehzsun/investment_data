@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+rm -rf ~/.qlib/qlib_data/cn_data/*
+
 
 DIR=~/.qlib/qlib_data/cn_data/features
 WORKING_DIR=~/vs_python/investment_data

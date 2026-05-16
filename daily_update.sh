@@ -31,7 +31,7 @@ do
 done
 
 # echo "Updating stock price"
-dolt sql-server --port 3307 --user root --password root &
+dolt sql-server --port 3307 &
 sleep 5 && python3 ~/vs_python/investment_data/tushare/update_a_stock_eod_price_to_latest.py
 killall dolt
 

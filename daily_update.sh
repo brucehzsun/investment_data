@@ -27,7 +27,7 @@ done
 python3 ~/vs_python/investment_data/tushare/dump_index_eod_price.py 
 for file in $(ls ~/vs_python/investment_data/tushare/index/); 
 do   
-  dolt table import -u ts_a_stock_eod_price ~/vs_python/investment_data/tushare/index/$file; 
+  dolt table import -u ts_a_stock_eod_price --continue ~/vs_python/investment_data/tushare/index/$file;
 done
 
 # echo "Updating stock price"

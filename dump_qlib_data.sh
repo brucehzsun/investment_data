@@ -50,7 +50,8 @@ else
     tar -czvf qlib_bin.tar.gz -C $WORKING_DIR qlib_bin
 
     mv qlib_bin/* ~/.qlib/qlib_data/cn_data
-    mv qlib_bin.tar.gz /mnt/data/download/
+    # cp qlib_bin.tar.gz /mnt/data/download/
+    mv qlib_bin.tar.gz /mnt/data/dolt/
 
     rm -rf qlib/qlib_*
     rm -rf qlib_bin

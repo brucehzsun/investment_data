@@ -4,7 +4,6 @@ import datetime
 import pandas
 import fire
 import time
-import datetime
 
 ts.set_token(os.environ["TUSHARE"])
 pro=ts.pro_api()
@@ -17,6 +16,20 @@ index_list = [
     '000852.SH', # csi1000
     '000985.SH', # csiall
     ]
+
+def query_index_weight(**kwargs):
+    max_retries = 3
+    for attempt in range(max_retries + 1):
+        # Empty responses and retries must observe the same request interval.
+        time.sleep(0.5)
+        try:
+            return pro.index_weight(**kwargs)
+        except Exception as exc:
+            if '频率超限' not in str(exc) or attempt == max_retries:
+                raise
+            print(f"index_weight 频率超限，等待 65 秒后重试 ({attempt + 1}/{max_retries})", flush=True)
+            time.sleep(65)
+
 
 def dump_index_data(start_date=None, end_date=None, skip_exists=True):
     if not os.path.exists(f"{file_path}/index_weight/"):
@@ -41,13 +54,12 @@ def dump_index_data(start_date=None, end_date=None, skip_exists=True):
         print("Dump to: ", filename)
         result_df_list = []
         while index_end_date < datetime.datetime.now():
-            df = pro.index_weight(index_code=index_name, start_date = index_start_date.strftime('%Y%m%d'), end_date=index_end_date.strftime('%Y%m%d'))
+            df = query_index_weight(index_code=index_name, start_date = index_start_date.strftime('%Y%m%d'), end_date=index_end_date.strftime('%Y%m%d'))
             index_start_date += time_step
             index_end_date += time_step
             if df.empty:
                 continue
             result_df_list.append(df)
-            time.sleep(0.5)
         if len(result_df_list) == 0:
             continue
         result_df = pandas.concat(result_df_list)
